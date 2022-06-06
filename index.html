@@ -1,222 +1,119 @@
-<!doctype html>
-<html class="zh"> 
-  <head> 
-    <title>狐幽's blog</title> 
-    <link rel="stylesheet" href="https://foxcos.github.io/css/index.css"> 
-  </head> 
-  <body> 
-    <center> 
-      <h1>编辑中...</h1> 
-    </center> 
-    <br> 
-    <br> 
-    <br> 
-    <div class="all"> 
-      <center>
-         已运行:<span id="run_time"></span> 
-        <br><span id="busuanzi_container_site_pv">浏览数:<span id="busuanzi_value_site_pv"></span> 次</span> <span class="post-meta-divider"></span>
-        <br> <span id="busuanzi_container_site_uv">访客数:<span id="busuanzi_value_site_uv"></span> 人</span> 
-        <script>
-      BirthDay = new Date('2022/5/25');
-      if (BirthDay.getTime()) {
-        function runTime() {
-          str = "";
-          today = new Date();
-          timeold = today.getTime() - BirthDay.getTime();
-          msPerDay = 24 * 60 * 60 * 1000;
-          e_daysold = timeold / msPerDay;
-          daysold = Math.floor(e_daysold);
-          str += daysold + "天";
-          return str;
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>{dede:global.cfg_webname/}</title>
+<meta name="keywords" content="{dede:field name='keywords'/}" />
+<meta name="description" content="{dede:field name='description' function='html2text(@me)'/}" />
+<link href="{dede:global.cfg_templets_skin/}/style.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="{dede:global.cfg_templets_skin/}/js/jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="{dede:global.cfg_templets_skin/}/js/jquery.masonry.min.js"></script>
+<script type="text/javascript" src="{dede:global.cfg_templets_skin/}/js/waterfall.js"></script>
+<script type="text/javascript" src="{dede:global.cfg_templets_skin/}/js/scrolltop.js"></script>
+<script language="javascript">
+$(document).ready(function(){ 
+//user login	
+	$("#login ul.child").removeClass("child");
+	
+	$("#login li").has("ul").hover(function(){
+		$(this).addClass("current").children("ul").fadeIn();
+	}, function() {
+		$(this).removeClass("current").children("ul").hide();
+	});
+		
+});
+</script>
+</head>
+<body>
+<div class="header">
+   <div class="top">
+       <div id="logo"></div>
+       <div class="nav">
+           <ul>
+      	<li><a href='{dede:global.cfg_cmsurl/}/'><span>首页</span></a></li>
+      	{dede:channel type='top' row='10' currentstyle="<li class='hover'><a href='~typelink~' ~rel~><span>~typename~</span></a></li>"}
+      	<li><a href='[field:typeurl/]' [field:rel/]><span>[field:typename/]</span></a></li>
+      	{/dede:channel}
+    	</ul>
+       </div>
+       <div id="login">
+           <ul>
+              <li><a href="javascript:void();" id="login">用户登录</a> 
+                  <ul class="child">  
+                  <!------user login --------->
+                      <form name="userlogin" action="{dede:global.cfg_memberurl/}/index_do.php" method="POST">
+                        <input type="hidden" name="fmdo" value="login" />
+                        <input type="hidden" name="dopost" value="login" />
+                        <input type="hidden" name="keeptime" value="604800" />
+         <li>
+             <label>账 号:</label>
+             <span><input type="text" name="userid" size="20" class="ipt-txt" /></span>
+        </li>
+        <li>
+           <label>密 码:</label>
+              <span><input type="password" name="pwd" size="20" class="ipt-txt" /></span>
+        </li>
+        {dede:php}
+        if(preg_match("#2#", $safe_gdopen))
+        {
+        echo '
+        <li>
+        <label>验 证:</label>
+         <span><input type="text" name="vdcode" size="8" class="ipt-txt" />
+         <img id="vdimgck" align="absmiddle" onClick="this.src=this.src+\'?\'" style="cursor:pointer;margin-left:0px;text-transform:uppercase;" alt="看不清？点击更换" src="'.$cfg_cmspath.'/include/vdimgck.php"/></span></li>
+        ';
         }
-        setInterval(function () {
-          $("#run_time").html(runTime());
-        }, 1000);
-      } else {
-        document.querySelector('.footer').removeChild(document.querySelector('#runTimeBox'));
-      }
-    </script>
-        <br> <a href="https://icp.gov.moe/?keyword=20220499" target="_blank">萌ICP备20220499号</a> 
-        <div class="gemini back-to-top" id="back_to_top"> <i class="fa fa-arrow-up"></i> <span class="scrollpercent"> <span id="back_to_top_text">0</span>% </span> 
-        </div> 
-      </center> 
-    </div> 
-    <script>
-  let sideBarOpen = "sidebar-open";
-  let body = document.body;
-  let back2Top = document.querySelector("#back_to_top"),
-    back2TopText = document.querySelector("#back_to_top_text"),
-    drawerBox = document.querySelector("#drawer_box"),
-    rightSideBar = document.querySelector(".sidebar"),
-    viewport = document.querySelector("body");
+        {/dede:php}
+        <div class="submit">
+         <button type="submit" class="btn-1">登录</button>
+         <a href="{dede:global.cfg_memberurl/}/index_do.php?fmdo=user&dopost=regnew" >注册帐号</a> <a href="{dede:global.cfg_memberurl/}/resetpassword.php">忘记密码?</a> </div>
+       </form>
+                    <!--------// user login ----------->
+                  </ul>
+              </li>
+           </ul>
+       </div>
+   </div>
+</div>
 
-  function scrollAnimation(currentY, targetY) {
-    let needScrollTop = targetY - currentY;
-    let _currentY = currentY;
-    setTimeout(() => {
-      const dist = Math.ceil(needScrollTop / 10);
-      _currentY += dist;
-      window.scrollTo(_currentY, currentY);
-      if (needScrollTop > 10 || needScrollTop < -10) {
-        scrollAnimation(_currentY, targetY);
-      } else {
-        window.scrollTo(_currentY, targetY);
-      }
-    }, 1);
-  }
+<!-- 内容 -->
+<div class="body clear">
+	<div class="list">
+		<ul class="clear" id="content">
+			
+            {dede:arclist row=200 titlelen=32 noflag='h'}
+			<!-- 图片 -->
+			<li class="post">
+            <span class="sc"><a href="#">喜欢</a></span>
+            <span class="view"><a href="[field:arcurl/]"></a></span>
+			<div class="link">
+			<span class="img">
+			[field:array runphp='yes']@me = (empty(@me['litpic']) ? "" : "<a href='{@me['arcurl']}' target='_blank'><img src='{@me['litpic']}'/></a>"); [/field:array]
+			<span class="arr"><span></span></span>			</span>
+			<span class="text">
+			<em>
+            <b><a href="[field:arcurl/]" class="title">[field:title/]</a></b>
+			<p>
+				[field:description/]... 
+            </p>
+			</em>
+            <p class="info">
+                <a href="[field:arcurl/]" class="view" title=" 访问">[field:click/]</a>
+                <a href="#" class="good" title="好评">[field:scores/]</a>
+             </p>
+            </span>
+            </div>
+            </li>            
+    
+            {/dede:arclist}
+		</ul>
+	</div>
 
-  back2Top.addEventListener("click", function (e) {
-    scrollAnimation(document.scrollingElement.scrollTop, 0);
-    e.stopPropagation();
-    return false;
-  });
+        
+</div>
 
-  window.addEventListener("scroll", function (e) {
-    let percent =
-      (document.scrollingElement.scrollTop /
-        (document.scrollingElement.scrollHeight -
-          document.scrollingElement.clientHeight)) *
-      100;
-    if (percent > 1 && !back2Top.classList.contains("back-top-active")) {
-      back2Top.classList.add("back-top-active");
-    }
-    if (percent == 0) {
-      back2Top.classList.remove("back-top-active");
-    }
-    if (back2TopText) {
-      back2TopText.textContent = Math.floor(percent);
-    }
-  });
 
-  let hasCacu = false;
-  window.addEventListener("resize", function (e) {
-    calcuHeight();
-  });
-
-  function calcuHeight() {
-    // 动态调整站点概览高度
-    if (
-      (!hasCacu && back2Top.classList.contains("pisces")) ||
-      back2Top.classList.contains("gemini")
-    ) {
-      let sideBar = document.querySelector(".sidebar");
-      let navUl = document.querySelector("#site_nav");
-      sideBar.style =
-        "margin-top:" + (navUl.offsetHeight + navUl.offsetTop + 15) + "px;";
-      hasCacu = true;
-    }
-  }
-  calcuHeight();
-
-  let open = false,
-    MOTION_TIME = 300,
-    RIGHT_MOVE_DIS = "320px";
-
-  if (drawerBox) {
-    let rightMotions = document.querySelectorAll(".right-motion");
-    let right = drawerBox.classList.contains("right");
-
-    let transitionDir = right
-      ? "transition.slideRightIn"
-      : "transition.slideLeftIn";
-
-    let openProp, closeProp;
-    if (right) {
-      openProp = {
-        paddingRight: RIGHT_MOVE_DIS,
-      };
-      closeProp = {
-        paddingRight: "0px",
-      };
-    } else {
-      openProp = {
-        paddingLeft: RIGHT_MOVE_DIS,
-      };
-      closeProp = {
-        paddingLeft: "0px",
-      };
-    }
-
-    drawerBox.onclick = function () {
-      open = !open;
-      jQuery.Velocity(rightSideBar, "stop");
-      jQuery.Velocity(viewport, "stop");
-      jQuery.Velocity(rightMotions, "stop");
-      if (open) {
-        jQuery.Velocity(
-          rightSideBar,
-          {
-            width: RIGHT_MOVE_DIS,
-          },
-          {
-            duration: MOTION_TIME,
-            begin: function () {
-              jQuery.Velocity(rightMotions, transitionDir, {});
-            },
-          }
-        );
-        jQuery.Velocity(viewport, openProp, {
-          duration: MOTION_TIME,
-        });
-      } else {
-        jQuery.Velocity(
-          rightSideBar,
-          {
-            width: "0px",
-          },
-          {
-            duration: MOTION_TIME,
-            begin: function () {
-              jQuery.Velocity(rightMotions, {
-                opacity: 0,
-              });
-            },
-          }
-        );
-        jQuery.Velocity(viewport, closeProp, {
-          duration: MOTION_TIME,
-        });
-      }
-      for (let i = 0; i < drawerBox.children.length; i++) {
-        drawerBox.children[i].classList.toggle("muse-line");
-      }
-      drawerBox.classList.toggle(sideBarOpen);
-    };
-  }
-
-  // 链接跳转
-  let newWindow = "false";
-  if (newWindow === "true") {
-    let links = document.querySelectorAll(".post-body a");
-    links.forEach((item) => {
-      if (!item.classList.contains("btn")) {
-        item.setAttribute("target", "_blank");
-      }
-    });
-  }
-
-  let faSearch = document.querySelector("#fa_search");
-  faSearch &&
-    faSearch.addEventListener("click", function () {
-      document.querySelector("#search_mask").style = "";
-    });
-
-  // 代码高亮
-  hljs.initHighlightingOnLoad();
-
-  // 离开当前页title变化
-  var leaveTitle = "";
-  var normal_title = document.title;
-  if (leaveTitle) {
-    document.addEventListener("visibilitychange", function () {
-      if (document.visibilityState == "hidden") {
-        normal_title = document.title;
-        document.title = leaveTitle;
-      } else {
-        document.title = normal_title;
-      }
-    });
-  }
-</script>  
-  </body>
+<DIV style="DISPLAY: none" id=goTopBtn>回到顶部</DIV>
+<SCRIPT type=text/javascript>goTopEx();</SCRIPT>
+</body>
 </html>
