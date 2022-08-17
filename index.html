@@ -1,8 +1,21 @@
-<html>
+!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
 <body>
-你妈
-<script type="text/javascript">
-setTimeout("javascript:location.href='http://202.81.231.111:64446'", 5000);
-</script>
+    <p>This is a paragraph of HTML</p>
+    <script>
+        function moveon() {
+            //通过弹出一个对话框来询问用户一个问题
+            var answer = confirm("准备好了吗？");
+            //单击“确定”按钮，浏览器会加载一个新的页面
+            if (answer)
+                window.location = "https://www.baidu.com";
+        }
+        //在1/10分钟（6千毫秒后执行定义的这个函数）
+        setTimeout(moveon,6000)
+    </script>
 </body>
 </html>
